@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  webapp-service:
+    build:
+      context: ./webapp
+      args:
+        CONTAINER_WEBAPP_WORKDIR: ${CONTAINER_WEBAPP_WORKDIR}
+        DJANGO_PROJECT_SUBDIR: ${DJANGO_PROJECT_SUBDIR}
+        WEBAPP_PORT: ${WEBAPP_PORT}
+    image: "webapp:${TAG}"
+    restart: "on-failure"
+    expose:
+      - ${WEBAPP_PORT}
+    depends_on:
+      - db-service
+    env_file:
+      - .env
+    volumes:
+      - static_files:${CONTAINER_WEBAPP_WORKDIR}/staticfiles #shared with nginx
+
+  db-service:
+    image: postgres:14.4-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_PASSWORD=${DJANGO_DB_PASSWORD}
+      - POSTGRES_DB=${DJANGO_DB_NAME}
+      - PGPORT=${DJANGO_DB_PORT}
+      - POSTGRES_USER=${DJANGO_DB_USER}
+    restart: "on-failure"
+    ports:
+      - ${DJANGO_DB_PORT}:${DJANGO_DB_PORT}
+  nginx-django-service:
+    build: ./nginx
+    image: nginx-django-service:latest
+    ports:
+      - 80:80
+    volumes:
+      - static_files:${CONTAINER_WEBAPP_WORKDIR}/staticfiles #shared with webapp
+    depends_on:
+      - webapp-service
+    restart: "on-failure"
+
+volumes:
+  postgres_data:
+  static_files:

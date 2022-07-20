@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  labels:
+    app: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-deployment
+  template:
+    metadata:
+      labels:
+        app: db-deployment
+    spec:
+      containers:
+      - name: postgres-db
+        image: registry.digitalocean.com/loukas-tech-container-registry/postgres:14.4-alpine
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: django-webapp-prod-env
+                key: DJANGO_DB_PASSWORD
+                optional: false
+          - name: POSTGRES_DB
+            valueFrom:
+              secretKeyRef:
+                name: django-webapp-prod-env
+                key: DJANGO_DB_NAME
+                optional: false
+          - name: PGPORT
+            valueFrom:
+              secretKeyRef:
+                name: django-webapp-prod-env
+                key: DJANGO_DB_PORT
+                optional: false
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: django-webapp-prod-env
+                key: DJANGO_DB_USER
+                optional: false
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5432
+      imagePullSecrets:
+        - name: loukas-tech-container-registry
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: db-deployment
+  ports:
+    - name: db-port
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-django-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx-django-deployment
+  template:
+    metadata:
+      labels:
+        app: nginx-django-deployment
+    spec:
+      containers:
+        - name: nginx
+          image: registry.digitalocean.com/loukas-tech-container-registry/nginx-django-service:latest
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-django-service
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+  selector:
+    app: nginx-django-deployment
