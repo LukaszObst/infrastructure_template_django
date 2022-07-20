@@ -3,6 +3,8 @@ name: Django CI & Postgres Test
 on:
   workflow_call:
   workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   django_test:
@@ -22,6 +24,7 @@ jobs:
       POSTGRES_HOST: localhost
       POSTGRES_PORT: 5432
       DB_IGNORE_SSL: "true"
+      DJANGO_PROJECT_SUBDIR: loukas_tech
     services:
       postgres_main:
         image: postgres:14.4-alpine
