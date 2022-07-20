@@ -25,6 +25,7 @@ jobs:
       POSTGRES_PORT: 5432
       DB_IGNORE_SSL: "true"
       DJANGO_PROJECT_SUBDIR: loukas_tech
+      ALLOWED_HOSTS: test
     services:
       postgres_main:
         image: postgres:14.4-alpine
