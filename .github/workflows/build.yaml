@@ -8,6 +8,12 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  CONTAINER_WEBAPP_WORKDIR: /home/webapp
+  DJANGO_PROJECT_SUBDIR: loukas_tech
+  WEBAPP_PORT: 8000
+  MY_REGISTRY: registry.digitalocean.com/loukas-tech-container-registry
+
 jobs:
   test_django_job:
     uses: ./.github/workflows/test-django.yaml
@@ -29,12 +35,15 @@ jobs:
         working-directory: ./webapp
         run: |
            docker build -f Dockerfile \
-             -t registry.digitalocean.com/loukas-tech-container-registry/webapp:latest  \
-             -t registry.digitalocean.com/loukas-tech-container-registry/webapp:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
+             -t ${MY_REGISTRY}/webapp:latest  \
+             -t ${MY_REGISTRY}/webapp:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
+             --build-arg CONTAINER_WEBAPP_WORKDIR="${CONTAINER_WEBAPP_WORKDIR}" \
+             --build-arg DJANGO_PROJECT_SUBDIR="${DJANGO_PROJECT_SUBDIR}" \
+             --build-arg WEBAPP_PORT="${WEBAPP_PORT}" \
              .
       - name: Push image
         run: |
-          docker push registry.digitalocean.com/loukas-tech-container-registry/webapp --all-tags
+          docker push ${MY_REGISTRY}/webapp --all-tags
       # - name: K8s cluster kubeconfig file with/ short-lived creds
       #   run: |
       #     doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
