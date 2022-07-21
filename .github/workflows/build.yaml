@@ -21,7 +21,7 @@ jobs:
       DJANGO_PROJECT_SUBDIR: loukas_tech
       WEBAPP_PORT: 8000
       MY_REGISTRY: registry.digitalocean.com/loukas-tech-container-registry
-      CLUSTER_NAME: do-fra1-k8s-fra1
+      CLUSTER_NAME: k8s-fra1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
