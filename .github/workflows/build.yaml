@@ -30,7 +30,7 @@ jobs:
         run: |
            docker build -f Dockerfile \
              -t registry.digitalocean.com/loukas-tech-container-registry/webapp:latest  \
-             -t registry.digitalocean.com/loukas-tech-container-registry/webapp:latest :${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
+             -t registry.digitalocean.com/loukas-tech-container-registry/webapp:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} \
              .
       - name: Push image
         run: |
