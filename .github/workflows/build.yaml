@@ -72,6 +72,6 @@ jobs:
           kubectl rollout status deployment/webapp-deployment
       - name: Post-build Django Commands - Migrate / Collectstatic
         run: |
-          export SINGLE_POD_NAME=$(kubectl get pod -l app=webapp-deployment -o jsonpath="{.items[0].metadata.name}")
+          export SINGLE_POD_NAME=$(kubectl get pods --selector=app=webapp-deployment --output=jsonpath='{.items[0].metadata.name}' --field-selector=status.phase=Running)
           kubectl exec -it $SINGLE_POD_NAME -- bash ${CONTAINER_WEBAPP_WORKDIR}/migrate.sh
           kubectl exec -it $SINGLE_POD_NAME -- bash ${CONTAINER_WEBAPP_WORKDIR}/collectstatic.sh
