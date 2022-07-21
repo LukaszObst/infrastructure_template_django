@@ -7,3 +7,5 @@ then
   echo "Creating superuser"
   python manage.py createsuperuser --noinput || true
 fi
+
+exit 0

@@ -47,6 +47,8 @@ COPY --chown=webapp:webapp --from=build ${CONTAINER_WEBAPP_WORKDIR}/venv ./venv
 
 # copy code
 COPY --chown=webapp:webapp ./entrypoint.sh ${CONTAINER_WEBAPP_WORKDIR}
+COPY --chown=webapp:webapp ./migrate.sh ${CONTAINER_WEBAPP_WORKDIR}
+COPY --chown=webapp:webapp ./collectstatic.sh ${CONTAINER_WEBAPP_WORKDIR}
 COPY --chown=webapp:webapp ./${DJANGO_PROJECT_SUBDIR} ${CONTAINER_WEBAPP_WORKDIR}/${DJANGO_PROJECT_SUBDIR}
 COPY --chown=webapp:webapp ./manage.py ${CONTAINER_WEBAPP_WORKDIR}
 

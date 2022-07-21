@@ -8,8 +8,6 @@ on:
   pull_request:
     branches: [main]
 
-
-
 jobs:
   test_django_job:
     uses: ./.github/workflows/test-django.yaml
