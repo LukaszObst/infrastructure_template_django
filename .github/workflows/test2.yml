@@ -11,12 +11,13 @@ jobs:
     steps:
       - name: Update deployment secrets
         run: |                                   
-          cat << EOF
-          apiVersion: v1
-          kind: Secret
-          metadata:
-            name: django-webapp-prod-env
-          stringData:
-            x=1
-            x=2
+          cat <({cat << EOF
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: django-webapp-prod-env
+              stringData:
+                AWS_ACCESS_KEY_ID=yyy
+                AWS_ACCESS_KEY_ID=xxx
           EOF
+          })
