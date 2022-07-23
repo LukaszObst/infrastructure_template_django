@@ -145,7 +145,7 @@ LOGGING = {
     'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'log' / 'django.log',
+            'filename': BASE_DIR / 'django.log',
         },
     },
     'root': {
