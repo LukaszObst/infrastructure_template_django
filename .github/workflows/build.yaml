@@ -74,5 +74,6 @@ jobs:
         run: |
           kubectl get pods --selector=app=webapp-deployment --output=jsonpath='{.items[0].metadata.name}' --field-selector=status.phase=Running
           export SINGLE_POD_NAME=$(kubectl get pods --selector=app=webapp-deployment --output=jsonpath='{.items[0].metadata.name}' --field-selector=status.phase=Running)
+          echo $SINGLE_POD_NAME
           kubectl exec -it $SINGLE_POD_NAME -- bash ${CONTAINER_WEBAPP_WORKDIR}/migrate.sh
           kubectl exec -it $SINGLE_POD_NAME -- bash ${CONTAINER_WEBAPP_WORKDIR}/collectstatic.sh
