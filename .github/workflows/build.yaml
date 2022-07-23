@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Insall doctl
+      - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_API_TOKEN_KEY }}
@@ -50,7 +50,7 @@ jobs:
           doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
       - name: Update deployment secrets
         run: |
-          kubectl delete secret django-webapp-prod-env
+          kubectl delete secret django-webapp-prod-env || true
           kubectl apply -f <((
           cat << EOF
               apiVersion: v1
