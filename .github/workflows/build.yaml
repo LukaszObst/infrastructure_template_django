@@ -51,17 +51,17 @@ jobs:
       - name: Update deployment secrets
         run: |
           kubectl delete secret django-webapp-prod-env
-          kubectl apply -f <(                                     
+          kubectl apply -f <((
           cat << EOF
-          apiVersion: v1
-          kind: Secret
-          metadata:
-            name: django-webapp-prod-env
-          stringData:
-            x=1
-            x=2
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: django-webapp-prod-env
+              stringData:
+                AWS_ACCESS_KEY_ID=yyy
+                AWS_ACCESS_KEY_ID=xxx
           EOF
-          )
+          ) | sed 's/^\s*//g')
       - name: Update Deployment image
         run: |
           kubectl set image deployment/webapp-deployment webapp=${MY_REGISTRY}/webapp:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}
