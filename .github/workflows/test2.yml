@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Update deployment secrets
         run: |                                   
-          cat <({cat << EOF
+          cat <(cat << EOF
               apiVersion: v1
               kind: Secret
               metadata:
@@ -20,4 +20,4 @@ jobs:
                 AWS_ACCESS_KEY_ID=yyy
                 AWS_ACCESS_KEY_ID=xxx
           EOF
-          })
+          )
