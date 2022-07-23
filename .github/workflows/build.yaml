@@ -58,23 +58,8 @@ jobs:
           metadata:
             name: django-webapp-prod-env
           stringData:
-            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }}
-            DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }}
-            DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }}
-            DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-            ALLOWED_HOST=${{ secrets.ALLOWED_HOST }}
-            DJANGO_DB_HOST=${{ secrets.DJANGO_DB_HOST }}
-            DJANGO_DB_NAME=${{ secrets.DJANGO_DB_NAME }}
-            DJANGO_DB_USER=${{ secrets.DJANGO_DB_USER }}
-            DJANGO_DB_PASSWORD=${{ secrets.DJANGO_DB_PASSWORD }}
-            DJANGO_DB_PORT=${{ secrets.DJANGO_DB_PORT }}
-            WEBAPP_PORT=${WEBAPP_PORT}
-            CONTAINER_WEBAPP_WORKDIR=${CONTAINER_WEBAPP_WORKDIR}
-            DJANGO_PROJECT_SUBDIR=${DJANGO_PROJECT_SUBDIR}
-            USE_DO_SPACES_FOR_STATIC=${USE_DO_SPACES_FOR_STATIC}
-            DJANGO_DB_ENGINE=${DJANGO_DB_ENGINE}
+            x=1
+            x=2
           EOF
           )
       - name: Update Deployment image
