@@ -7,6 +7,7 @@ ca-certificate.crt
 .kube
 overall_architecture.drawio
 befehle.txt
+Dockerfile
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
