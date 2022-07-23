@@ -12,7 +12,7 @@ jobs:
   test_django_job:
     uses: ./.github/workflows/test-django.yaml
   build_job:
-    timeout-minutes: 5
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     needs: [test_django_job]
     env:
@@ -51,17 +51,17 @@ jobs:
       - name: Update deployment secrets
         run: |
           kubectl delete secret django-webapp-prod-env || true
-          cat <(
-            cat << EOF
-            apiVersion: v1
-            kind: Secret
-            metadata:
-              name: django-webapp-prod-env
-            stringData:
-              x:1
-              y:2
-            EOF
-          )
+          cat <((
+          cat << EOF
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: django-webapp-prod-env
+          stringData:
+            AWS_ACCESS_KEY_ID: yyy
+            AWS_ACCESS_KEY_ID: xxx
+          EOF
+          ))
           kubectl apply -f <((
           cat << EOF
           apiVersion: v1
@@ -69,8 +69,8 @@ jobs:
           metadata:
             name: django-webapp-prod-env
           stringData:
-            x:1
-            y:2
+            AWS_ACCESS_KEY_ID: yyy
+            AWS_ACCESS_KEY_ID: xxx
           EOF
           ))
       - name: Update Deployment image
