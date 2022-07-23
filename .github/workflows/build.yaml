@@ -21,6 +21,8 @@ jobs:
       WEBAPP_PORT: 8000
       MY_REGISTRY: registry.digitalocean.com/loukas-tech-container-registry
       CLUSTER_NAME: k8s-fra1
+      USE_DO_SPACES_FOR_STATIC: 1
+      DJANGO_DB_ENGINE: django.db.backends.postgresql
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -46,24 +48,35 @@ jobs:
       - name: K8s cluster kubeconfig file with/ short-lived creds
         run: |
           doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ env.CLUSTER_NAME }}
-      # - name: Update deployment secrets
-      #   run: |
-      #     cat << EOF >> web/.env.prod
-      #     AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }}
-      #     DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }}
-      #     DJANGO_SUERPUSER_EMAIL=${{ secrets.DJANGO_SUERPUSER_EMAIL }}
-      #     DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
-      #     ENV_ALLOWED_HOST=${{ secrets.ENV_ALLOWED_HOST }}
-      #     POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-      #     POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-      #     POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-      #     POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-      #     POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-      #     EOF
-      #     kubectl delete secret django-k8s-web-prod-env
-      #     kubectl create secret generic django-k8s-web-prod-env --from-env-file=web/.env.prod
+      - name: Update deployment secrets
+        run: |
+          kubectl delete secret django-webapp-prod-env
+          kubectl apply -f <(                                     
+          cat << EOF
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: django-webapp-prod-env
+          stringData:
+            AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            DJANGO_SUPERUSER_USERNAME=${{ secrets.DJANGO_SUPERUSER_USERNAME }}
+            DJANGO_SUPERUSER_PASSWORD=${{ secrets.DJANGO_SUPERUSER_PASSWORD }}
+            DJANGO_SUPERUSER_EMAIL=${{ secrets.DJANGO_SUPERUSER_EMAIL }}
+            DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+            ALLOWED_HOST=${{ secrets.ALLOWED_HOST }}
+            DJANGO_DB_HOST=${{ secrets.DJANGO_DB_HOST }}
+            DJANGO_DB_NAME=${{ secrets.DJANGO_DB_NAME }}
+            DJANGO_DB_USER=${{ secrets.DJANGO_DB_USER }}
+            DJANGO_DB_PASSWORD=${{ secrets.DJANGO_DB_PASSWORD }}
+            DJANGO_DB_PORT=${{ secrets.DJANGO_DB_PORT }}
+            WEBAPP_PORT=${WEBAPP_PORT}
+            CONTAINER_WEBAPP_WORKDIR=${CONTAINER_WEBAPP_WORKDIR}
+            DJANGO_PROJECT_SUBDIR=${DJANGO_PROJECT_SUBDIR}
+            USE_DO_SPACES_FOR_STATIC=${USE_DO_SPACES_FOR_STATIC}
+            DJANGO_DB_ENGINE=${DJANGO_DB_ENGINE}
+          EOF
+          )
       - name: Update Deployment image
         run: |
           kubectl set image deployment/webapp-deployment webapp=${MY_REGISTRY}/webapp:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}

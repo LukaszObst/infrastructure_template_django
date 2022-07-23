@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG") == "1"
+DEBUG = os.getenv("DJANGO_DEBUG") == "1"
 
 USE_DO_SPACES_FOR_STATIC = os.getenv("USE_DO_SPACES_FOR_STATIC") == "1"
 
@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
-CSRF_TRUSTED_ORIGINS = ["http://" + i for i in ALLOWED_HOSTS]
+#CSRF_TRUSTED_ORIGINS = ["http://" + i for i in ALLOWED_HOSTS]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
@@ -93,7 +93,7 @@ DB_PORT = os.getenv('DJANGO_DB_PORT')
 DB_IS_AVAILABLE = all([DB_ENGINE, DB_NAME, DB_USER,
                       DB_PASSWORD, DB_HOST, DB_PORT])
 
-DB_READY = os.getenv('DB_READY') == "1"
+DB_READY = os.getenv('DB_READY', '1') == "1"
 DB_IGNORE_SSL = os.getenv('DB_IGNORE_SSL') == "true"
 
 if DB_IS_AVAILABLE and DB_READY:
