@@ -52,7 +52,7 @@ COPY --chown=webapp:webapp ./collectstatic.sh ${CONTAINER_WEBAPP_WORKDIR}
 COPY --chown=webapp:webapp ./${DJANGO_PROJECT_SUBDIR} ${CONTAINER_WEBAPP_WORKDIR}/${DJANGO_PROJECT_SUBDIR}
 COPY --chown=webapp:webapp ./manage.py ${CONTAINER_WEBAPP_WORKDIR}
 
-RUN chmod -R u+rwx ${CONTAINER_WEBAPP_WORKDIR}
+RUN chmod u+rwx ${CONTAINER_WEBAPP_WORKDIR}
 USER webapp
 
 ENV PATH="${CONTAINER_WEBAPP_WORKDIR}/venv/bin:$PATH"

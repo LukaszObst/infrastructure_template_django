@@ -9,4 +9,5 @@ done
 
 echo "database has initialized successfully"
 
+exec "$@"
 gunicorn ${DJANGO_PROJECT_SUBDIR}.wsgi:application --bind 0.0.0.0:${WEBAPP_PORT}

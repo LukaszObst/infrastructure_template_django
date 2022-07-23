@@ -16,7 +16,9 @@ import os
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG") == "1"
 
-if not DEBUG:
+USE_DO_SPACES_FOR_STATIC = os.environ.get("USE_DO_SPACES_FOR_STATIC") == "1"
+
+if USE_DO_SPACES_FOR_STATIC:
     from .cdn.conf import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

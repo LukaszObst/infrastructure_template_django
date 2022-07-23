@@ -12,7 +12,8 @@ services:
     restart: "on-failure"
     expose:
       - ${WEBAPP_PORT}
-    command:  sh -c "sh ${CONTAINER_WEBAPP_WORKDIR}/migrate.sh && sh ${CONTAINER_WEBAPP_WORKDIR}/collectstatic.sh && sh ${CONTAINER_WEBAPP_WORKDIR}/entrypoint.sh"
+    entrypoint: /bin/bash ${CONTAINER_WEBAPP_WORKDIR}/entrypoint.sh
+    command:  bash -c "${CONTAINER_WEBAPP_WORKDIR}/migrate.sh && ${CONTAINER_WEBAPP_WORKDIR}/collectstatic.sh && ${CONTAINER_WEBAPP_WORKDIR}/entrypoint.sh"
     depends_on:
       - db-service
     env_file:

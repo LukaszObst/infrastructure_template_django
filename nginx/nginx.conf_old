@@ -1,0 +1,19 @@
+upstream loukas_tech {
+    server webapp-service:8000;
+}
+
+server {
+    listen 80;
+
+    location / {
+        set $upstream http://loukas_tech;
+        proxy_pass $upstream;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+    }
+
+    location /static/ {
+        alias /home/webapp/staticfiles/;
+    }
+}
