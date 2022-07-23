@@ -1,0 +1,1 @@
+[![Build Docker Container & Push to DO Registry](https://github.com/LukaszObst/loukas_tech/actions/workflows/build.yaml/badge.svg)](https://github.com/LukaszObst/loukas_tech/actions/workflows/build.yaml)
