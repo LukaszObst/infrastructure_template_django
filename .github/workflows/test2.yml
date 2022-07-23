@@ -1,0 +1,23 @@
+name: test
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build_job:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update deployment secrets
+        run: |                                   
+          cat <(cat << EOF
+              apiVersion: v1
+              kind: Secret
+              metadata:
+                name: django-webapp-prod-env
+              stringData:
+                AWS_ACCESS_KEY_ID=yyy
+                AWS_ACCESS_KEY_ID=xxx
+          EOF
+          )
