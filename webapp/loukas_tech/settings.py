@@ -14,9 +14,9 @@ from pathlib import Path
 import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG") == "1"
+DEBUG = os.getenv("DEBUG") == "1"
 
-USE_DO_SPACES_FOR_STATIC = os.environ.get("USE_DO_SPACES_FOR_STATIC") == "1"
+USE_DO_SPACES_FOR_STATIC = os.getenv("USE_DO_SPACES_FOR_STATIC") == "1"
 
 if USE_DO_SPACES_FOR_STATIC:
     from .cdn.conf import *
@@ -28,11 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
 CSRF_TRUSTED_ORIGINS = ["http://" + i for i in ALLOWED_HOSTS]
 
 SESSION_COOKIE_SECURE = True
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = f'{os.environ.get("DJANGO_PROJECT_SUBDIR")}.urls'
+ROOT_URLCONF = f'{os.getenv("DJANGO_PROJECT_SUBDIR")}.urls'
 
 TEMPLATES = [
     {
@@ -78,23 +78,23 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = f'{os.environ.get("DJANGO_PROJECT_SUBDIR")}.wsgi.application'
+WSGI_APPLICATION = f'{os.getenv("DJANGO_PROJECT_SUBDIR")}.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DB_ENGINE = os.environ.get('DJANGO_DB_ENGINE')
-DB_NAME = os.environ.get('DJANGO_DB_NAME')
-DB_USER = os.environ.get('DJANGO_DB_USER')
-DB_PASSWORD = os.environ.get('DJANGO_DB_PASSWORD')
-DB_HOST = os.environ.get('DJANGO_DB_HOST')
-DB_PORT = os.environ.get('DJANGO_DB_PORT')
+DB_ENGINE = os.getenv('DJANGO_DB_ENGINE')
+DB_NAME = os.getenv('DJANGO_DB_NAME')
+DB_USER = os.getenv('DJANGO_DB_USER')
+DB_PASSWORD = os.getenv('DJANGO_DB_PASSWORD')
+DB_HOST = os.getenv('DJANGO_DB_HOST')
+DB_PORT = os.getenv('DJANGO_DB_PORT')
 DB_IS_AVAILABLE = all([DB_ENGINE, DB_NAME, DB_USER,
                       DB_PASSWORD, DB_HOST, DB_PORT])
 
-DB_READY = os.environ.get('DB_READY') == "1"
-DB_IGNORE_SSL = os.environ.get('DB_IGNORE_SSL') == "true"
+DB_READY = os.getenv('DB_READY') == "1"
+DB_IGNORE_SSL = os.getenv('DB_IGNORE_SSL') == "true"
 
 if DB_IS_AVAILABLE and DB_READY:
     DATABASES = {
@@ -139,6 +139,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
