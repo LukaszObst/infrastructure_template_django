@@ -58,8 +58,8 @@ jobs:
               metadata:
                 name: django-webapp-prod-env
               stringData:
-                AWS_ACCESS_KEY_ID=yyy
-                AWS_ACCESS_KEY_ID=xxx
+                AWS_ACCESS_KEY_ID: yyy
+                AWS_ACCESS_KEY_ID: xxx
           EOF
           ) | sed 's/^\s{2}//g')
       - name: Update Deployment image
