@@ -19,7 +19,7 @@ services:
     env_file:
       - .env
     volumes:
-      - static_files:${CONTAINER_WEBAPP_WORKDIR}/staticfiles #shared with nginx
+      - static_files:${CONTAINER_WEBAPP_WORKDIR}/staticfiles-cdn #shared with nginx
 
   db-service:
     image: postgres:14.4-alpine
@@ -39,7 +39,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - static_files:${CONTAINER_WEBAPP_WORKDIR}/staticfiles #shared with webapp
+      - static_files:${CONTAINER_WEBAPP_WORKDIR}/staticfiles-cdn #shared with webapp
     depends_on:
       - webapp-service
     restart: "on-failure"
