@@ -36,6 +36,7 @@ RUN groupadd --gid 1002 webapp && useradd -u 1002 -g webapp -s /bin/bash webapp
 RUN apt-get update && apt-get install -y netcat
 
 # set work directory
+RUN mkdir -p ${CONTAINER_WEBAPP_WORKDIR}
 RUN chown webapp:webapp ${CONTAINER_WEBAPP_WORKDIR}
 WORKDIR ${CONTAINER_WEBAPP_WORKDIR}
 
