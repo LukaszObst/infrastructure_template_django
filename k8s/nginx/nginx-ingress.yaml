@@ -7,7 +7,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-connect-timeout: "10"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "10"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "10"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
+  tls:
+  - hosts:
+    - loukas.tech
+    secretName: loukas-tech-tls
   rules:
   - host: loukas.tech
     http:

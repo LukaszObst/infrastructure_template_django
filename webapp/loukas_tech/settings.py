@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(" ")
-#CSRF_TRUSTED_ORIGINS = ["http://" + i for i in ALLOWED_HOSTS]
+CSRF_TRUSTED_ORIGINS = ["http://" + i for i in ALLOWED_HOSTS]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
